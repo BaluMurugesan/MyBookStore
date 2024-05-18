@@ -37,8 +37,8 @@ export const HomeStack = () => {
               <>
                 <Icon
                   name="home"
-                  size={30}
-                  color={focused ? '#8FBA60' : 'gray'}
+                  size={25}
+                  color={focused ? '#ed5f64' : 'gray'}
                 />
               </>
             );
@@ -55,8 +55,8 @@ export const HomeStack = () => {
               <>
                 <Icon
                   name="search1"
-                  size={30}
-                  color={focused ? '#8FBA60' : 'gray'}
+                  size={25}
+                  color={focused ? '#ed5f64' : 'gray'}
                 />
               </>
             );
@@ -73,8 +73,8 @@ export const HomeStack = () => {
               <>
                 <Icon
                   name="staro"
-                  size={30}
-                  color={focused ? '#8FBA60' : 'gray'}
+                  size={25}
+                  color={focused ? '#ed5f64' : 'gray'}
                 />
               </>
             );

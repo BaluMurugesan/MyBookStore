@@ -2,6 +2,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 import Login from '../Auth/Login';
 import {HomeStack} from '../HomeStack';
+import ViewBook from '../../pages/ViewBook';
 
 const RouteLayout = ({token = ''}) => {
   const Stack = createNativeStackNavigator();
@@ -13,11 +14,12 @@ const RouteLayout = ({token = ''}) => {
         headerShown: false,
         contentStyle: {
           flex: 1,
-          backgroundColor: '#fff',
+          backgroundColor: '#f2eae0',
         },
       }}>
       <Stack.Screen name="HomeStack" component={HomeStack} />
       <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="ViewBook" component={ViewBook} />
     </Stack.Navigator>
   );
 };
