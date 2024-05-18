@@ -10,7 +10,6 @@ const SearchBook = ({navigation}) => {
   const [masterData, setMasterData] = useState([]);
   const {width} = useWindowDimensions();
   const getSearchBook = async val => {
-    console.log(val, ';vaaaaaa');
     const {data} = await getBookDataByList(val);
     if (data?.items?.length) {
       setMasterData(data.items);

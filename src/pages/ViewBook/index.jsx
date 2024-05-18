@@ -104,7 +104,6 @@ const ViewBook = ({navigation, route}) => {
 
   const handleBtnPress = () => {
     if (type == 'remove') {
-      console.log(index, 'index');
       removeItem(index);
     } else {
       addItem(bookData);
