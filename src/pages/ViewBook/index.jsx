@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import Text from '../../components/atoms/Text';
 import {
   Image,
@@ -9,10 +9,10 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import IconFontisto from 'react-native-vector-icons/MaterialIcons';
+import {ArrayContext} from '../../context/ArrayContext';
 
 const ViewBook = ({navigation, route}) => {
-  const {bookData} = route.params;
+  const {bookData, type, index} = route.params;
   const {width} = useWindowDimensions();
   const styles = StyleSheet.create({
     container: {
@@ -100,6 +100,17 @@ const ViewBook = ({navigation, route}) => {
       fontWeight: 'bold',
     },
   });
+  const {addItem, removeItem} = useContext(ArrayContext);
+
+  const handleBtnPress = () => {
+    if (type == 'remove') {
+      console.log(index, 'index');
+      removeItem(index);
+    } else {
+      addItem(bookData);
+    }
+    navigation.goBack();
+  };
   return (
     <View style={styles.container}>
       <View style={styles.topConatiner}>
@@ -111,9 +122,6 @@ const ViewBook = ({navigation, route}) => {
             style={styles.rowCenter}>
             <Icon name="arrow-back-circle-outline" size={30} color="#ed5f64" />
             <Text style={styles.backText}>Back</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {}}>
-            <IconFontisto name="favorite-outline" size={30} color="#ed5f64" />
           </TouchableOpacity>
         </View>
         <View style={[styles.rowCenter, styles.center]}>
@@ -154,8 +162,14 @@ const ViewBook = ({navigation, route}) => {
           </View>
           <Text style={styles.content}>{bookData.volumeInfo.description}</Text>
         </ScrollView>
-        <TouchableOpacity style={styles.btn}>
-          <Text style={styles.btnText}>Add to Favorite</Text>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => {
+            handleBtnPress();
+          }}>
+          <Text style={styles.btnText}>
+            {type == 'remove' ? 'Remove from favorite' : 'Add to favorite'}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>

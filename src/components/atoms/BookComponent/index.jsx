@@ -2,7 +2,7 @@ import React from 'react';
 import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import Text from '../Text';
 
-const BookComponent = ({data, navigation}) => {
+const BookComponent = ({data, navigation, type = 'add', index}) => {
   const styles = StyleSheet.create({
     image: {
       width: 130,
@@ -30,17 +30,22 @@ const BookComponent = ({data, navigation}) => {
     <TouchableOpacity
       style={styles.mainContainer}
       onPress={() => {
-        navigation.navigate('ViewBook', {bookData: data});
+        navigation.navigate('ViewBook', {
+          bookData: data,
+          type: type,
+          index: index,
+        });
       }}>
       <Image
         style={styles.image}
         source={{
-          uri: data.volumeInfo.imageLinks.thumbnail,
+          uri: data?.volumeInfo?.imageLinks?.thumbnail,
         }}
         resizeMode="contain"
+        alt="Image"
       />
       <Text style={styles.title} numberOfLines={2}>
-        {data.volumeInfo.title}
+        {data?.volumeInfo?.title}
       </Text>
       <Text numberOfLines={2} style={styles.authors}>
         {data?.volumeInfo?.authors?.join(',')}

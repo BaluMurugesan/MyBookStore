@@ -3,19 +3,22 @@ import React, { useState } from 'react';
 import {SafeAreaView, StatusBar, StyleSheet, Text, View} from 'react-native';
 import RouteLayout from './src/routes/RouteLayout';
 import { PaperProvider } from 'react-native-paper';
+import { ArrayProvider } from './src/context/ArrayContext';
 
 const App = () => {
   const [token, setToken] = useState('HomeStack');
 
   return (
     <NavigationContainer>
-    <SafeAreaView
+      <ArrayProvider>
+        <SafeAreaView
       style={Styles.container}>
         <StatusBar />
         <PaperProvider>
           {!!token && <RouteLayout token={token} />}
           </PaperProvider>
-    </SafeAreaView>
+        </SafeAreaView>
+        </ArrayProvider>
     </NavigationContainer>
   );
 };
