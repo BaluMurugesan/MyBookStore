@@ -61,7 +61,7 @@ const InputWithSearch = ({
           {...props}
         />
       </View>
-      <TouchableOpacity onPress={handleSearchPress}>
+      <TouchableOpacity onPress={handleSearchPress} testID="search-icon">
         <Icon name="search-circle" size={50} color="#ed5f64" />
       </TouchableOpacity>
     </View>

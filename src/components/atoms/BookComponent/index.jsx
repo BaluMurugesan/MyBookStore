@@ -43,6 +43,7 @@ const BookComponent = ({data, navigation, type = 'add', index}) => {
         }}
         resizeMode="contain"
         alt="Image"
+        testID="book-cover-image"
       />
       <Text style={styles.title} numberOfLines={2}>
         {data?.title}

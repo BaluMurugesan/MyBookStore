@@ -10,7 +10,7 @@ import Text from '../Text';
 
 const TabListComponent = ({
   onTabPress = () => {},
-  list = [], //[{id:1,title:""}]
+  list = [],
   defaultSelected = null,
   itemStyle = {},
 }) => {
@@ -30,11 +30,9 @@ const TabListComponent = ({
   }, [list, defaultSelected]);
   const styles = StyleSheet.create({
     tabStyle: {
-      // width: 150,
       alignItems: 'center',
       justifyContent: 'center',
       minHeight: 25,
-      // marginRight: 5,
       paddingHorizontal: 15,
       paddingVertical: 3,
     },
