@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import Text from '../../../components/atoms/Text';
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -7,7 +6,7 @@ import {
 } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {StyleSheet, View} from 'react-native';
+import {Image, StyleSheet, View, useWindowDimensions} from 'react-native';
 
 GoogleSignin.configure({
   webClientId:
@@ -37,14 +36,39 @@ const onGoogleButtonPress = async () => {
 };
 
 const Login = ({navigation}) => {
+  const {width} = useWindowDimensions();
+  const styles = StyleSheet.create({
+    conatiner: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#fff',
+    },
+    images: {
+      height: width,
+      aspectRatio: 1 / 1,
+    },
+    btn: {
+      width: width - 50,
+    },
+  });
   return (
     <View style={styles.conatiner}>
+      <Image
+        source={{
+          uri: 'https://img.freepik.com/free-vector/click-here-concept-illustration_114360-4030.jpg?t=st=1716097798~exp=1716101398~hmac=188a2821fd44b3ec30e823deaad8294edc9831fe91624801542e24e24af3c3b0&w=740',
+        }}
+        style={styles.images}
+      />
       <GoogleSigninButton
+        style={styles.btn}
         title="Google Sign-In"
         onPress={() =>
           onGoogleButtonPress()
             .then(async res => {
               await AsyncStorage.setItem('USERID', res.user.uid);
+              await AsyncStorage.setItem('NAME', res.user.displayName);
+              await AsyncStorage.setItem('PROFILE', res.user.photoURL);
               navigation.navigate('HomeStack');
             })
             .catch(error => {
@@ -55,12 +79,5 @@ const Login = ({navigation}) => {
     </View>
   );
 };
-const styles = StyleSheet.create({
-  conatiner: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default Login;

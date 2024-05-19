@@ -5,19 +5,21 @@ import RouteLayout from './src/routes/RouteLayout';
 import {PaperProvider} from 'react-native-paper';
 import {ArrayProvider} from './src/context/ArrayContext';
 import auth from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const App = () => {
   const [token, setToken] = useState('');
-  function onAuthStateChanged(user) {
-    console.log(user, 'UserId');
+  async function onAuthStateChanged(user) {
     if (user) {
+      await AsyncStorage.setItem('USERID', user.uid);
+      await AsyncStorage.setItem('NAME', user.displayName);
+      await AsyncStorage.setItem('PROFILE', user.photoURL);
       setToken('HomeStack');
     } else {
       setToken('Login');
     }
   }
   useEffect(() => {
-    console.log('calledFrom APA');
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
   }, []);

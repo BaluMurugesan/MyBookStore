@@ -64,6 +64,25 @@ const Home = ({navigation}) => {
     imageUrl:
       'https://img.freepik.com/free-vector/lovely-witch-with-hand-drawn-style_23-2147693061.jpg?t=st=1716025864~exp=1716029464~hmac=4fc380453aa085972bbb7d2351eecd9e07928cf90dd9228db2edfb8b8e2351f3&w=740',
   });
+  const [userObj, setUserObj] = useState({
+    userName: '',
+    userUrl: '',
+  });
+
+  const getUserData = async () => {
+    const userName = await AsyncStorage.getItem('NAME');
+    const userUrl = await AsyncStorage.getItem('PROFILE');
+    console.log(userName, userUrl);
+    setUserObj({
+      userName: userName,
+      userUrl: userUrl,
+    });
+  };
+
+  useEffect(() => {
+    getUserData();
+  }, []);
+
   const getListData = async () => {
     const {data} = await getBookDataByList(selectedTab?.title);
     if (data?.items?.length) {
@@ -82,12 +101,13 @@ const Home = ({navigation}) => {
   }, [selectedTab]);
   const handleSignoutPress = async () => {
     try {
-      // await GoogleSignin.signOut();
       auth()
         .signOut()
         .then(() => console.log('User signed out!'));
       await GoogleSignin.revokeAccess();
-      // await AsyncStorage.setItem('USERID', '');
+      await AsyncStorage.setItem('USERID', '');
+      await AsyncStorage.setItem('NAME', '');
+      await AsyncStorage.setItem('PROFILE', '');
       navigation.navigate('Login');
     } catch (error) {
       console.error(error);
@@ -104,13 +124,15 @@ const Home = ({navigation}) => {
     <View style={styles.container}>
       <View style={[styles.userContainer, styles.mainContainer]}>
         <View style={styles.userContainer}>
-          <Image
-            source={{
-              uri: 'https://cdn.dribbble.com/users/1675913/avatars/small/2bbe514fc75d8e8dc07cd216db56ecc0.jpeg?1644577548',
-            }}
-            style={styles.userImage}
-          />
-          <Text style={styles.userName}>Hi,Balu</Text>
+          {Boolean(userObj?.userUrl) && (
+            <Image
+              source={{
+                uri: userObj?.userUrl,
+              }}
+              style={styles.userImage}
+            />
+          )}
+          <Text style={styles.userName}>Hi,{userObj?.userName}</Text>
         </View>
         <TouchableOpacity
           onPress={() => {
