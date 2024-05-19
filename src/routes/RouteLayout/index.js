@@ -4,12 +4,13 @@ import Login from '../Auth/Login';
 import {HomeStack} from '../HomeStack';
 import ViewBook from '../../pages/ViewBook';
 
-const RouteLayout = ({token = ''}) => {
+const RouteLayout = ({token}) => {
+  console.log(token, 'tokentokentokentoken');
   const Stack = createNativeStackNavigator();
   return (
     <Stack.Navigator
       initialRouteName={token}
-      // initialRouteName={'BottomStack'}
+      // initialRouteName={'HomeStack'}
       screenOptions={{
         headerShown: false,
         contentStyle: {

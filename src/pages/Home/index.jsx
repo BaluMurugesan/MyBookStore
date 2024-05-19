@@ -5,6 +5,7 @@ import {
   FlatList,
   Image,
   StyleSheet,
+  TouchableOpacity,
   View,
   useWindowDimensions,
 } from 'react-native';
@@ -12,7 +13,9 @@ import InputWithSearch from '../../components/atoms/InputWithSearch';
 import TabListComponent from '../../components/atoms/TabListComponent';
 import {getBookDataByList} from '../../services/home';
 import BookComponent from '../../components/atoms/BookComponent';
-
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import auth from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const tabList = [
   {
     id: 1,
@@ -77,6 +80,19 @@ const Home = ({navigation}) => {
       setMasterData([]);
     };
   }, [selectedTab]);
+  const handleSignoutPress = async () => {
+    try {
+      // await GoogleSignin.signOut();
+      auth()
+        .signOut()
+        .then(() => console.log('User signed out!'));
+      await GoogleSignin.revokeAccess();
+      // await AsyncStorage.setItem('USERID', '');
+      navigation.navigate('Login');
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const renderBookData = ({item, index}) => {
     return (
       <View key={index + 1} style={{width: (width - 40) / 2}}>
@@ -96,9 +112,12 @@ const Home = ({navigation}) => {
           />
           <Text style={styles.userName}>Hi,Balu</Text>
         </View>
-        <View>
+        <TouchableOpacity
+          onPress={() => {
+            handleSignoutPress();
+          }}>
           <Icon name="log-out-outline" size={30} color="#ed5f64" />
-        </View>
+        </TouchableOpacity>
       </View>
       <View style={styles.popular}>
         <Text style={styles.popularText}>Popular Book Lists</Text>
