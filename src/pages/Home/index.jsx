@@ -72,7 +72,6 @@ const Home = ({navigation}) => {
   const getUserData = async () => {
     const userName = await AsyncStorage.getItem('NAME');
     const userUrl = await AsyncStorage.getItem('PROFILE');
-    console.log(userName, userUrl);
     setUserObj({
       userName: userName,
       userUrl: userUrl,
@@ -84,9 +83,9 @@ const Home = ({navigation}) => {
   }, []);
 
   const getListData = async () => {
-    const {data} = await getBookDataByList(selectedTab?.title);
-    if (data?.items?.length) {
-      setMasterData(data.items);
+    const {data, err} = await getBookDataByList(selectedTab?.title);
+    if (data?.docs?.length) {
+      setMasterData(data.docs);
     } else {
       setMasterData([]);
     }

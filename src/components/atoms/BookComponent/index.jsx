@@ -39,16 +39,16 @@ const BookComponent = ({data, navigation, type = 'add', index}) => {
       <Image
         style={styles.image}
         source={{
-          uri: data?.volumeInfo?.imageLinks?.thumbnail,
+          uri: `https://covers.openlibrary.org/b/id/${data.cover_i}-L.jpg`,
         }}
         resizeMode="contain"
         alt="Image"
       />
       <Text style={styles.title} numberOfLines={2}>
-        {data?.volumeInfo?.title}
+        {data?.title}
       </Text>
       <Text numberOfLines={2} style={styles.authors}>
-        {data?.volumeInfo?.authors?.join(',')}
+        {data?.author_name?.join(',')}
       </Text>
     </TouchableOpacity>
   );

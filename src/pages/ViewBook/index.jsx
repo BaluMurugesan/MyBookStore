@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Text from '../../components/atoms/Text';
 import {
   Image,
@@ -10,10 +10,12 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {ArrayContext} from '../../context/ArrayContext';
+import {getDescription} from '../../services/home';
 
 const ViewBook = ({navigation, route}) => {
   const {bookData, type, index} = route.params;
   const {width} = useWindowDimensions();
+  const [description, setDescription] = useState('');
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -35,7 +37,6 @@ const ViewBook = ({navigation, route}) => {
       backgroundColor: '#fff',
       borderTopLeftRadius: 10,
       borderTopRightRadius: 10,
-      alignItems: 'center',
       marginHorizontal: 5,
     },
     topConatiner: {
@@ -99,6 +100,9 @@ const ViewBook = ({navigation, route}) => {
       fontSize: 17,
       fontWeight: 'bold',
     },
+    btncenter: {
+      alignItems: 'center',
+    },
   });
   const {addItem, removeItem} = useContext(ArrayContext);
 
@@ -110,6 +114,26 @@ const ViewBook = ({navigation, route}) => {
     }
     navigation.goBack();
   };
+  const getDescriptionsData = async () => {
+    if (bookData?.key) {
+      const id = bookData?.key?.split('/')[2].toString();
+      if (id) {
+        const {data} = await getDescription(id);
+        if (data) {
+          if (typeof data.description == 'string') {
+            setDescription(data.description);
+          } else {
+            setDescription(
+              data?.description?.value ? data?.description?.value : '',
+            );
+          }
+        }
+      }
+    }
+  };
+  useEffect(() => {
+    getDescriptionsData();
+  }, [bookData]);
   return (
     <View style={styles.container}>
       <View style={styles.topConatiner}>
@@ -127,7 +151,7 @@ const ViewBook = ({navigation, route}) => {
           <Image
             style={styles.image}
             source={{
-              uri: bookData.volumeInfo.imageLinks.thumbnail,
+              uri: `https://covers.openlibrary.org/b/id/${bookData.cover_i}-L.jpg`,
             }}
             resizeMode="contain"
           />
@@ -135,41 +159,43 @@ const ViewBook = ({navigation, route}) => {
       </View>
       <View style={styles.bottomConatiner}>
         <ScrollView contentContainerStyle={{padding: 10}}>
-          <Text style={styles.headerText}>{bookData.volumeInfo.title}</Text>
+          <Text style={styles.headerText}>{bookData?.title}</Text>
           <Text>
             <Text style={styles.headerAuthors}>Authors : </Text>
             <Text numberOfLines={2} style={styles.authors}>
-              {bookData?.volumeInfo?.authors?.join(',')}
+              {bookData?.author_name?.join(',')}
             </Text>
           </Text>
           <View style={styles.box}>
             <View style={styles.subBox}>
-              <Text>{bookData.volumeInfo.pageCount}</Text>
+              <Text>{bookData?.number_of_pages_median}</Text>
               <Text>Pages</Text>
             </View>
             <View style={styles.subBox}>
               <View style={styles.rowCenter}>
                 <Icon name="star" size={15} color="#ffc635" />
-                <Text>{bookData.volumeInfo.averageRating}</Text>
+                <Text>{bookData?.ratings_average}</Text>
               </View>
               <Text>Rating</Text>
             </View>
             <View style={styles.lastBox}>
-              <Text>{bookData.volumeInfo.ratingsCount}</Text>
+              <Text>{bookData?.ratings_count}</Text>
               <Text>Ratings Count</Text>
             </View>
           </View>
-          <Text style={styles.content}>{bookData.volumeInfo.description}</Text>
+          <Text style={styles.content}>{description.toString()}</Text>
         </ScrollView>
-        <TouchableOpacity
-          style={styles.btn}
-          onPress={() => {
-            handleBtnPress();
-          }}>
-          <Text style={styles.btnText}>
-            {type == 'remove' ? 'Remove from favorite' : 'Add to favorite'}
-          </Text>
-        </TouchableOpacity>
+        <View style={styles.btncenter}>
+          <TouchableOpacity
+            style={styles.btn}
+            onPress={() => {
+              handleBtnPress();
+            }}>
+            <Text style={styles.btnText}>
+              {type == 'remove' ? 'Remove from favorite' : 'Add to favorite'}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );

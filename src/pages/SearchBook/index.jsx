@@ -11,8 +11,8 @@ const SearchBook = ({navigation}) => {
   const {width} = useWindowDimensions();
   const getSearchBook = async val => {
     const {data} = await getBookDataByList(val);
-    if (data?.items?.length) {
-      setMasterData(data.items);
+    if (data?.docs?.length) {
+      setMasterData(data.docs);
     } else {
       setMasterData([]);
     }
@@ -44,7 +44,8 @@ const SearchBook = ({navigation}) => {
               setSearchText(val);
             } else {
               setSearchText(val);
-              getSearchBook('');
+              setMasterData([]);
+              // getSearchBook('');
             }
           }}
           value={searchText}

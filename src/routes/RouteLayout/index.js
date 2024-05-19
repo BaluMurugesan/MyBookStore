@@ -5,7 +5,6 @@ import {HomeStack} from '../HomeStack';
 import ViewBook from '../../pages/ViewBook';
 
 const RouteLayout = ({token}) => {
-  console.log(token, 'tokentokentokentoken');
   const Stack = createNativeStackNavigator();
   return (
     <Stack.Navigator
